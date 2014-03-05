@@ -8,7 +8,6 @@ module.exports =
 
   activate: ->
     @paneSubscription = atom.workspaceView.eachPane (pane) =>
-      console.log 'each pane'
       zentabController = new ZentabsController(pane)
       @zentabsControllers ?= []
       @zentabsControllers.push(zentabController)

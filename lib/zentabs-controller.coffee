@@ -9,9 +9,6 @@ class ZentabsController extends View
       @h1 'ZenTabs'
 
   initialize: (@pane) ->
-
-    console.log 'initializing pane', @pane
-
     @items = []
     @subscriptions = []
     @paneContainer = @pane.getContainer()
@@ -22,12 +19,10 @@ class ZentabsController extends View
 
     @subscribe @pane, 'pane:item-added', (e, item, index) =>
       @pushItem item
-      console.log 'new tab', @items
       true
 
     @subscribe @pane, 'pane:item-removed', (e, item) =>
       _.remove @items, item
-      console.log 'remove tab', @items
       true
 
     @subscribe @pane, 'pane:active-item-changed', =>
@@ -44,7 +39,6 @@ class ZentabsController extends View
     return unless @pane.activeItem
     _.remove @items, @pane.activeItem
     @items.push @pane.activeItem
-    console.log 'update active', @items
 
   closeOverflowingTabs: ()->
     maxTabs = atom.config.getInt 'zentabs.maximumOpenedTabs' ? Infinity
