@@ -5,10 +5,12 @@ module.exports =
 class ZentabsController extends View
 
   @content: ()->
-    @div =>
-      @h1 'ZenTabs'
+    @span ''
 
   initialize: (@pane) ->
+
+    atom.workspaceView.command 'zentabs:cleanup', => @closeOverflowingTabs()
+
     @items = []
     @subscriptions = []
     @paneContainer = @pane.getContainer()
@@ -31,9 +33,11 @@ class ZentabsController extends View
 
     @updateActiveTab()
 
+    atom.workspaceView.append(this)
+
   pushItem: (item)->
     @items.push item
-    @closeOverflowingTabs()
+    @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
 
   updateActiveTab: ->
     return unless @pane.activeItem

@@ -5,6 +5,7 @@ module.exports =
 
   configDefaults:
     maximumOpenedTabs: 5
+    manualMode: false
 
   activate: ->
     @paneSubscription = atom.workspaceView.eachPane (pane) =>
