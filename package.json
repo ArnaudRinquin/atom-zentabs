@@ -1,0 +1,14 @@
+{
+  "name": "zentabs",
+  "version": "0.1.0",
+  "main": "./lib/zentabs",
+  "description": "Limit the number of open tabs.",
+  "license": "MIT",
+  "repository": "https://github.com/ArnaudRinquin/atom-zentabs",
+  "engines": {
+    "atom": "*"
+  },
+  "dependencies": {
+    "underscore-plus": "1.x"
+  }
+}
