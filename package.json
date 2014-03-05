@@ -1,6 +1,6 @@
 {
   "name": "zentabs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "./lib/zentabs",
   "description": "Keep the opened tabs amount below specified limit",
   "license": "MIT",
