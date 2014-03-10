@@ -1,0 +1,5 @@
+'context-menu':
+  '.tab:not(.pinned)':
+    'Pin tab': 'zentabs:pintab'
+  '.tab.pinned':
+    'Unpin tab': 'zentabs:unpintab'
