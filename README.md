@@ -8,7 +8,11 @@ See it in action with a 5 tabs limit:
 
 ![screencast](http://i.imgur.com/nxx4E1y.gif)
 
+## Pin tabs
+
 You can right click tabs to pin/unpin them. It basically works as a whitelist.
+
+![pinned-screecast](http://i.imgur.com/2n0VJHH.gif)
 
 ## Options
 * `maximumOpenedTabs:5`: the maximum amount of tabs that will be kep open
@@ -18,4 +22,3 @@ You can right click tabs to pin/unpin them. It basically works as a whitelist.
 ## Key bindings
 
 `zentabs:cleanup`, default `ctrl-Z`: triggers a tab cleanup
-
