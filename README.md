@@ -18,6 +18,7 @@ You can right click tabs to pin/unpin them. It basically works as a whitelist.
 * `maximumOpenedTabs:5`: the maximum amount of tabs that will be kep open
 * `manualMode:false`: disable autmatic tab closing but still allow you to cleanup tabs through the key bindings
 * `showPinnedIcon:true`: Show a lock icon next to pinned tabs title
+* `neverCloseUnsaved:false`: If set to true, unsaved file won't be closed
 
 ## Key bindings
 
