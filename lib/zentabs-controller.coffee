@@ -53,9 +53,16 @@ class ZentabsController extends View
 
   closeOverflowingTabs: ()->
     maxTabs = atom.config.getInt 'zentabs.maximumOpenedTabs' ? Infinity
-    while @items.length > maxTabs
+    neverCloseUnsaved = atom.config.get 'zentabs.neverCloseUnsaved'
+
+    while @items.length > 0 and @items.length > maxTabs
       olderTab = @items.shift()
-      @pane.destroyItem olderTab
+
+      # Check tab saved status
+      modified = olderTab.buffer?.isModified();
+
+      unless neverCloseUnsaved and modified
+        @pane.destroyItem olderTab
 
   pinTab: ()=>
     tab = $('.tab.right-clicked').view()

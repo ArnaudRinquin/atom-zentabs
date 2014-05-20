@@ -7,6 +7,7 @@ module.exports =
     maximumOpenedTabs: 5
     manualMode: false
     showPinnedIcon: true
+    neverCloseUnsaved: false
 
   activate: ->
     @paneSubscription = atom.workspaceView.eachPane (pane) =>
