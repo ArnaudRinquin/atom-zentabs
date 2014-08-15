@@ -17,10 +17,10 @@ describe "Zentabs", ->
     atom.deserializers.add(TestView)
     item1 = new TestView('Item 1')
     item2 = new TestView('Item 2')
-    pane = atom.workspaceView.getActivePane()
+    pane = atom.workspaceView.getActivePaneView()
     pane.addItem(item1, 0)
     pane.addItem(item2, 2)
-    pane.showItem(item2)
+    pane.activateItem(item2)
 
     waitsForPromise ->
       atom.packages.activatePackage("zentabs")
@@ -48,10 +48,10 @@ describe "Zentabs", ->
       expect(pane.getItems().length).toEqual 4
     it "it removed the oldest active tab", ->
 
-      pane.showItem item2 # -> should be removed
-      pane.showItem item1
-      pane.showItem item3
-      pane.showItem item4
+      pane.activateItem item2 # -> should be removed
+      pane.activateItem item1
+      pane.activateItem item3
+      pane.activateItem item4
 
       item5 = new TestView('Item 5')
       pane.addItem(item5, 0)
