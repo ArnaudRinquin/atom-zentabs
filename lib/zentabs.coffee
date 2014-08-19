@@ -10,7 +10,7 @@ module.exports =
     neverCloseUnsaved: false
 
   activate: ->
-    @paneSubscription = atom.workspaceView.eachPane (pane) =>
+    @paneSubscription = atom.workspaceView.eachPaneView (pane) =>
       zentabController = new ZentabsController(pane)
       @zentabsControllers ?= []
       @zentabsControllers.push(zentabController)
