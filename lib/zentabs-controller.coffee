@@ -65,12 +65,11 @@ class ZentabsController extends View
         @pane.destroyItem olderTab
 
   pinTab: ()=>
-    tab = $('.tab.right-clicked').view()
+    tab = $('.tab.right-clicked')
     return unless tab
 
-    window.tab = tab
-
-    item = tab.item
+    view = atom.views.getView tab
+    item = view.item
 
     _.remove @items, item
 
@@ -80,9 +79,10 @@ class ZentabsController extends View
     tab.find('.title').addClass 'icon icon-lock' if atom.config.get 'zentabs.showPinnedIcon'
 
   unpinTab: ()=>
-    tab = $('.tab.right-clicked').view()
+    tab = $('.tab.right-clicked')
     return unless tab
 
+    view = atom.views.getView tab
     item = tab.item
 
     _.remove @pinnedItems, item
