@@ -6,9 +6,10 @@
   "license": "MIT",
   "repository": "https://github.com/ArnaudRinquin/atom-zentabs",
   "engines": {
-    "atom": "*"
+    "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-    "underscore-plus": "1.x"
+    "underscore-plus": "1.x",
+    "atom-space-pen-views": "^2.0.3"
   }
 }
