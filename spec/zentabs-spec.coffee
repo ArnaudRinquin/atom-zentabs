@@ -1,8 +1,9 @@
-{$, WorkspaceView, View}  = require 'atom'
+{Disposable} = require 'atom'
+{$,View} = require 'atom-space-pen-views'
 ZentabsController = require '../lib/zentabs-controller'
 
 describe "Zentabs", ->
-  [item1, item2, item3, item4, pane] = []
+  [workspaceElement, item1, item2, item3, item4, pane] = []
 
   class TestView extends View
     @deserialize: ({title, longTitle}) -> new TestView(title, longTitle)
@@ -11,13 +12,15 @@ describe "Zentabs", ->
     getTitle: -> @title
     getLongTitle: -> @longTitle
     serialize: -> { deserializer: 'TestView', @title, @longTitle }
+    onDidChangeTitle: -> new Disposable
+    onDidChangeModified: -> new Disposable
+
 
   beforeEach ->
-    atom.workspaceView = new WorkspaceView
-    atom.deserializers.add(TestView)
+    workspaceElement = atom.views.getView(atom.workspace)
     item1 = new TestView('Item 1')
     item2 = new TestView('Item 2')
-    pane = atom.workspaceView.getActivePaneView()
+    pane = atom.workspace.getActivePane()
     pane.addItem(item1, 0)
     pane.addItem(item2, 2)
     pane.activateItem(item2)
@@ -25,8 +28,6 @@ describe "Zentabs", ->
     waitsForPromise ->
       atom.packages.activatePackage("zentabs")
 
-  afterEach ->
-    atom.deserializers.remove(TestView)
 
   describe "When a maximum tab limit is set", ->
     beforeEach ()->
@@ -96,5 +97,5 @@ describe "Zentabs", ->
 
     it "trigger a cleanup", ->
       expect(pane.getItems().length).toEqual 5
-      atom.workspaceView.trigger 'zentabs:cleanup'
+      atom.commands.dispatch workspaceElement, 'zentabs:cleanup'
       expect(pane.getItems().length).toEqual 4

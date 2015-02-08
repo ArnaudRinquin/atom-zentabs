@@ -1,4 +1,5 @@
-{$, View} = require 'atom'
+{CompositeDisposable} = require 'atom'
+{$, View} = require 'atom-space-pen-views'
 _ = require 'underscore-plus'
 
 module.exports =
@@ -9,50 +10,53 @@ class ZentabsController extends View
 
   initialize: (@pane) ->
 
-    atom.workspaceView.command 'zentabs:cleanup', => @closeOverflowingTabs()
-    atom.workspaceView.command 'zentabs:pintab', @pinTab
-    atom.workspaceView.command 'zentabs:unpintab', @unpinTab
+    atom.commands.add 'atom-workspace', 'zentabs:cleanup', => @closeOverflowingTabs()
+    atom.commands.add 'atom-workspace', 'zentabs:pintab', @pinTab
+    atom.commands.add 'atom-workspace', 'zentabs:unpintab', @unpinTab
+
 
     @items = []
     @pinnedItems = []
-    @subscriptions = []
-    @paneContainer = @pane.getContainer()
+    @subscriptions = new CompositeDisposable
     @pushItem(item) for item in @pane.getItems()
 
-    @subscribe @paneContainer, 'pane:removed', (pane) =>
+    @subscriptions.add @pane.onDidDestroy (pane) =>
       @unsubscribe() if pane is @pane
 
-    @subscribe @pane, 'pane:item-added', (e, item, index) =>
+    @subscriptions.add @pane.onDidAddItem ({item}) =>
       @pushItem item
       @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
       true
 
-    @subscribe @pane, 'pane:item-removed', (e, item) =>
+    @subscriptions.add @pane.onDidRemoveItem ({item}) =>
       _.remove @pinnedItems, item
       _.remove @items, item
       true
 
-    @subscribe @pane, 'pane:active-item-changed', =>
+    @subscriptions.add @pane.onDidChangeActiveItem =>
       @updateActiveTab()
       true
 
     @updateActiveTab()
     @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
 
-    atom.workspaceView.append(this)
+    atom.workspace.addBottomPanel(item: this)
+  
+  destroy: =>
+    @subscriptions.dispose()
 
   pushItem: (item)->
     @items.push item unless @pinnedItems.indexOf(item) > -1
 
   updateActiveTab: ->
-    item = @pane.activeItem
+    item = @pane.getActiveItem()
     return unless item
     return if @pinnedItems.indexOf(item) > -1 # do nothing if item is pinned
     _.remove @items, item
     @items.push item
 
   closeOverflowingTabs: ()->
-    maxTabs = atom.config.getInt 'zentabs.maximumOpenedTabs' ? Infinity
+    maxTabs = atom.config.get 'zentabs.maximumOpenedTabs'
     neverCloseUnsaved = atom.config.get 'zentabs.neverCloseUnsaved'
 
     while @items.length > 0 and @items.length > maxTabs
