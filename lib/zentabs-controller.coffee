@@ -24,10 +24,11 @@ class ZentabsController extends View
 
     @subscriptions.add @pane.onDidAddItem ({item}) =>
       @pushItem item
-      @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
+      @closeOverflowingTabs(item) unless atom.config.get 'zentabs.manualMode'
       true
 
     @subscriptions.add @pane.onDidRemoveItem ({item}) =>
+      console.log 'Items removed'
       _.remove @pinnedItems, item
       _.remove @items, item
       true
@@ -54,18 +55,29 @@ class ZentabsController extends View
     _.remove @items, item
     @items.push item
 
-  closeOverflowingTabs: ()->
+  getRepo: -> atom.project.getRepo()
+
+  closeOverflowingTabs: (newItem)->
     maxTabs = atom.config.get 'zentabs.maximumOpenedTabs'
     neverCloseUnsaved = atom.config.get 'zentabs.neverCloseUnsaved'
+    neverCloseDirty = atom.config.get 'zentabs.neverCloseDirty'
+    neverCloseNew = atom.config.get 'zentabs.neverCloseNew'
 
-    while @items.length > 0 and @items.length > maxTabs
-      olderTab = @items.shift()
+    tmpItems = @items.slice 0
+    tmpItems.forEach (olderItem) =>
+      if @items.length > maxTabs
+        # Check tab saved status
+        preventBecauseUnsaved = olderItem.buffer?.isModified() && neverCloseUnsaved;
+        preventBecauseDirty = false
+        preventBecauseNew = false
 
-      # Check tab saved status
-      modified = olderTab.buffer?.isModified();
+        if repo = @getRepo()
+          if itemPath = olderItem.buffer?.file?.path
+            preventBecauseDirty = repo.isPathModified(itemPath) && neverCloseDirty
+            preventBecauseNew = repo.isPathNew(itemPath) && neverCloseNew
 
-      unless neverCloseUnsaved and modified
-        @pane.destroyItem olderTab
+        unless preventBecauseUnsaved || preventBecauseDirty || preventBecauseNew || newItem == olderItem
+          @pane.destroyItem olderItem
 
   pinTab: () =>
     tab = $('.tab.right-clicked')

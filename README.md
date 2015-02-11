@@ -18,7 +18,9 @@ You can right click tabs to pin/unpin them. It basically works as a whitelist.
 * `maximumOpenedTabs:5`: the maximum amount of tabs that will be keep open
 * `manualMode:false`: disable automatic tab closing but still allow you to cleanup tabs through the key bindings
 * `showPinnedIcon:true`: Show a lock icon next to pinned tabs title
-* `neverCloseUnsaved:false`: If set to true, unsaved file won't be closed
+* `neverCloseUnsaved:false`: If set to true, unsaved files won't be closed
+* `neverCloseNew:false`: If set to true, files with a `new` git status won't be closed
+* `neverCloseDirty:false`: If set to true, files with a `modified` git status won't be closed
 
 ## Key bindings
 

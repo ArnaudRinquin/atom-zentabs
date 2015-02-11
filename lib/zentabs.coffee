@@ -17,6 +17,12 @@ module.exports =
     neverCloseUnsaved:
       type: 'boolean'
       default: false
+    neverCloseNew:
+      type: 'boolean'
+      default: false
+    neverCloseDirty:
+      type: 'boolean'
+      default: false
 
   activate: ->
     @paneSubscription = new CompositeDisposable
