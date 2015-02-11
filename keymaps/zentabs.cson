@@ -1,2 +1,2 @@
 'atom-workspace':
-  'ctrl-Z': 'zentabs:cleanup'
+  'alt-t': 'zentabs:cleanup'
