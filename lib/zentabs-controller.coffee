@@ -14,7 +14,6 @@ class ZentabsController extends View
     atom.commands.add 'atom-workspace', 'zentabs:pintab', @pinTab
     atom.commands.add 'atom-workspace', 'zentabs:unpintab', @unpinTab
 
-
     @items = []
     @pinnedItems = []
     @subscriptions = new CompositeDisposable
@@ -41,7 +40,7 @@ class ZentabsController extends View
     @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
 
     atom.workspace.addBottomPanel(item: this)
-  
+
   destroy: =>
     @subscriptions.dispose()
 
@@ -68,7 +67,7 @@ class ZentabsController extends View
       unless neverCloseUnsaved and modified
         @pane.destroyItem olderTab
 
-  pinTab: ()=>
+  pinTab: () =>
     tab = $('.tab.right-clicked')
     return unless tab
 
@@ -80,20 +79,20 @@ class ZentabsController extends View
     @pinnedItems.push item unless @pinnedItems.indexOf(item) > -1
 
     tab.addClass 'pinned'
-    tab.find('.title').addClass 'icon icon-lock' if atom.config.get 'zentabs.showPinnedIcon'
+    # tab.find('.title').addClass 'icon icon-lock' if atom.config.get 'zentabs.showPinnedIcon'
 
-  unpinTab: ()=>
+  unpinTab: (event) =>
     tab = $('.tab.right-clicked')
     return unless tab
 
     view = atom.views.getView tab
-    item = tab.item
+    item = view.item
 
     _.remove @pinnedItems, item
 
     @pushItem item
 
     tab.removeClass 'pinned'
-    tab.find('.title').removeClass 'icon icon-lock'
+    # tab.find('.title').removeClass 'icon icon-lock'
 
     @closeOverflowingTabs()
