@@ -25,15 +25,15 @@ module.exports =
       default: false
 
   activate: ->
-    @paneSubscription = new CompositeDisposable
-    for pane in atom.workspace.getPanes()
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add = atom.workspace.observePanes (pane) =>
       zentabController = new ZentabsController(pane)
       @zentabsControllers ?= []
       @zentabsControllers.push(zentabController)
-      @paneSubscription.add pane.onDidDestroy =>
+      @subscriptions.add pane.onDidDestroy =>
         _.remove(@zentabsControllers, zentabController)
       zentabController
 
   deactivate: ->
-    @paneSubscription.dispose()
+    @subscriptions.dispose()
     zentabController.remove() for zentabController in @zentabsControllers ? []
