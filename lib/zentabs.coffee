@@ -26,7 +26,7 @@ module.exports =
 
   activate: ->
     @subscriptions = new CompositeDisposable
-    @subscriptions.add = atom.workspace.observePanes (pane) =>
+    @subscriptions.add atom.workspace.observePanes (pane) =>
       zentabController = new ZentabsController(pane)
       @zentabsControllers ?= []
       @zentabsControllers.push(zentabController)

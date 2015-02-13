@@ -57,6 +57,14 @@ describe "Zentabs", ->
       item5 = new TestView('Item 5')
       pane.addItem(item5, 0)
       expect(pane.getItems().indexOf(item2)).toEqual -1
+      
+    describe "When it creates new pane to the right of active pane", ->
+      it "also limits the number of opened tabs", ->
+        newPane = atom.workspace.getActivePane().splitRight()
+        for i in [1..5]
+          item = new TestView("Item #{i}")
+          newPane.addItem(item, 0)
+        expect(newPane.getItems().length).toEqual 4
 
   describe "When manual mode is enabled", ->
     beforeEach ()->
