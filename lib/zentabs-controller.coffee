@@ -28,7 +28,6 @@ class ZentabsController extends View
       true
 
     @subscriptions.add @pane.onDidRemoveItem ({item}) =>
-      console.log 'Items removed'
       _.remove @pinnedItems, item
       _.remove @items, item
       true
