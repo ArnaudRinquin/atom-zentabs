@@ -39,8 +39,6 @@ class ZentabsController extends View
     @updateActiveTab()
     @closeOverflowingTabs() unless atom.config.get 'zentabs.manualMode'
 
-    atom.workspace.addBottomPanel(item: this)
-
   destroy: =>
     @subscriptions.dispose()
 
