@@ -52,7 +52,7 @@ class ZentabsController extends View
     _.remove @items, item
     @items.push item
 
-  getRepo: -> atom.project.getRepo()
+  getRepositories: -> atom.project.getRepositories()
 
   closeOverflowingTabs: (newItem)->
     maxTabs = atom.config.get 'zentabs.maximumOpenedTabs'
@@ -68,10 +68,10 @@ class ZentabsController extends View
         preventBecauseDirty = false
         preventBecauseNew = false
 
-        if repo = @getRepo()
-          if itemPath = olderItem.buffer?.file?.path
-            preventBecauseDirty = repo.isPathModified(itemPath) && neverCloseDirty
-            preventBecauseNew = repo.isPathNew(itemPath) && neverCloseNew
+        if itemPath = olderItem.buffer?.file?.path
+          @getRepositories().forEach (repo)->
+            preventBecauseDirty = preventBecauseDirty || repo.isPathModified(itemPath) && neverCloseDirty
+            preventBecauseNew = preventBecauseNew || repo.isPathNew(itemPath) && neverCloseNew
 
         unless preventBecauseUnsaved || preventBecauseDirty || preventBecauseNew || newItem == olderItem
           @pane.destroyItem olderItem
