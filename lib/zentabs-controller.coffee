@@ -9,14 +9,14 @@ class ZentabsController extends View
     @span ''
 
   initialize: (@pane) ->
+    @subscriptions = new CompositeDisposable
 
-    atom.commands.add 'atom-workspace', 'zentabs:cleanup', => @closeOverflowingTabs()
-    atom.commands.add 'atom-workspace', 'zentabs:pintab', @pinTab
-    atom.commands.add 'atom-workspace', 'zentabs:unpintab', @unpinTab
+    @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:cleanup', => @closeOverflowingTabs()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:pintab', @pinTab
+    @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:unpintab', @unpinTab
 
     @items = []
     @pinnedItems = []
-    @subscriptions = new CompositeDisposable
     @pushItem(item) for item in @pane.getItems()
 
     @subscriptions.add @pane.onDidDestroy (pane) =>
