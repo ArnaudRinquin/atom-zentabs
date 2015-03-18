@@ -70,6 +70,7 @@ class ZentabsController extends View
 
         if itemPath = olderItem.buffer?.file?.path
           @getRepositories().forEach (repo)->
+            return unless repo
             preventBecauseDirty = preventBecauseDirty || repo.isPathModified(itemPath) && neverCloseDirty
             preventBecauseNew = preventBecauseNew || repo.isPathNew(itemPath) && neverCloseNew
 
