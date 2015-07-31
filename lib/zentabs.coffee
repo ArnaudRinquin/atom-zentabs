@@ -36,4 +36,4 @@ module.exports =
 
   deactivate: ->
     @subscriptions.dispose()
-    zentabController.remove() for zentabController in @zentabsControllers ? []
+    zentabController.remove() && zentabController.destroy() for zentabController in @zentabsControllers ? []
