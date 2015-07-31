@@ -46,6 +46,7 @@ describe "Zentabs", ->
       expect(pane.getItems().length).toEqual 4
       item5 = new TestView('Item 5')
       pane.addItem(item5, 0)
+      advanceClock()
       expect(pane.getItems().length).toEqual 4
     it "it removed the oldest active tab", ->
 
@@ -56,14 +57,16 @@ describe "Zentabs", ->
 
       item5 = new TestView('Item 5')
       pane.addItem(item5, 0)
+      advanceClock()
       expect(pane.getItems().indexOf(item2)).toEqual -1
-      
+
     describe "When it creates new pane to the right of active pane", ->
       it "also limits the number of opened tabs", ->
         newPane = atom.workspace.getActivePane().splitRight()
         for i in [1..5]
           item = new TestView("Item #{i}")
           newPane.addItem(item, 0)
+        advanceClock()
         expect(newPane.getItems().length).toEqual 4
 
   describe "When manual mode is enabled", ->
@@ -85,6 +88,7 @@ describe "Zentabs", ->
       expect(pane.getItems().length).toEqual 4
       item5 = new TestView('Item 5')
       pane.addItem(item5, 0)
+      advanceClock()
       expect(pane.getItems().length).toEqual 5
 
   describe "When zentabs:cleanup is fired", ->
@@ -106,4 +110,5 @@ describe "Zentabs", ->
     it "trigger a cleanup", ->
       expect(pane.getItems().length).toEqual 5
       atom.commands.dispatch workspaceElement, 'zentabs:cleanup'
+      advanceClock()
       expect(pane.getItems().length).toEqual 4
