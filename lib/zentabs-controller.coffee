@@ -24,7 +24,8 @@ class ZentabsController extends View
 
     @subscriptions.add @pane.onDidAddItem ({item}) =>
       @pushItem item
-      @closeOverflowingTabs(item) unless atom.config.get 'zentabs.manualMode'
+      unless atom.config.get 'zentabs.manualMode'
+        setTimeout (=> @closeOverflowingTabs(item)), 0
       true
 
     @subscriptions.add @pane.onDidRemoveItem ({item}) =>
