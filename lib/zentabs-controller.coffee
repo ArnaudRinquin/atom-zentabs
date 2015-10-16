@@ -65,7 +65,7 @@ class ZentabsController extends View
     tmpItems.forEach (olderItem) =>
       if @items.length > maxTabs
         # Check tab saved status
-        preventBecauseUnsaved = olderItem.buffer?.isModified() && neverCloseUnsaved;
+        preventBecauseUnsaved = olderItem.buffer?.isModified() && neverCloseUnsaved
         preventBecauseDirty = false
         preventBecauseNew = false
 
