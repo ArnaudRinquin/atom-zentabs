@@ -14,6 +14,7 @@ class ZentabsController extends View
     @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:cleanup', => @closeOverflowingTabs()
     @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:pintab', @pinTab
     @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:unpintab', @unpinTab
+    @subscriptions.add atom.commands.add 'atom-workspace', 'zentabs:toggletab', @toggleTab
 
     @items = []
     @pinnedItems = []
@@ -107,3 +108,18 @@ class ZentabsController extends View
     # tab.find('.title').removeClass 'icon icon-lock'
 
     @closeOverflowingTabs()
+
+  toggleTab: =>
+    tab = $('.tab.active')
+    return unless tab
+
+    view = atom.views.getView tab
+    item = view.item
+    if tab.hasClass('pinned')
+      @pushItem item
+      tab.removeClass 'pinned'
+      @closeOverflowingTabs()
+    else
+      _.remove @items, item
+      @pinnedItems.push item unless @pinnedItems.indexOf(item) > -1
+      tab.addClass 'pinned'
