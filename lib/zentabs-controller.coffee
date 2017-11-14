@@ -82,7 +82,7 @@ class ZentabsController extends View
           itemAmount -= 1
 
   pinTab: () =>
-    tab = $('.tab.right-clicked, .tab.active').first()
+    tab = $('.tab.right-clicked').first()
     return if tab.size() is 0
 
     view = atom.views.getView tab
@@ -96,7 +96,7 @@ class ZentabsController extends View
     # tab.find('.title').addClass 'icon icon-lock' if atom.config.get 'zentabs.showPinnedIcon'
 
   unpinTab: (event) =>
-    tab = $('.tab.right-clicked, .tab.active').first()
+    tab = $('.tab.right-clicked').first()
     return if tab.size() is 0
 
     view = atom.views.getView tab
